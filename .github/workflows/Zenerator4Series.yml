@@ -1,0 +1,76 @@
+name: "Zenerator Test 4 Series"
+
+on:
+  workflow_dispatch:
+    inputs:
+      Season:
+        description: "Season"
+        required: true
+        type: choice
+        options:
+        - "01"
+        - "02"
+        - "03"
+        - "04"
+      EpNum:
+        description: "EpNum"
+        required: true
+        type: choice
+        options:
+        - "01"
+        - "02"
+        - "03"
+
+env:
+  SOURCERY: ${{ secrets.SOURCERY }}
+  SauceLocationOnIndex: "td:/MiraculouSauce"
+  LocationOnIndex: "td:/MiraculouSourceryTest"
+  AudLocationOnIndex: "td:/MiraculouSourceryAudZ"
+  Variant: "Series"
+  Season: ${{ github.event.inputs.Season }}
+  EpNum: ${{ github.event.inputs.EpNum }}
+  SubLocation: "S${{ github.event.inputs.Season }}E${{ github.event.inputs.EpNum }}"
+  RCLONE_CONFIG_URL: ${{ secrets.RCLONE_CONFIG_URL }}
+  RCLONE_INSTALL_MIRROR: ${{ secrets.RCLONE_INSTALL_MIRROR }}
+  FTOOL_ARC_URL: ${{ secrets.FTOOL_ARC_URL }}
+  FTOOL_CONVERTER: ${{ secrets.FTOOL_CONVERTER }}
+  FTOOL_PROBER: ${{ secrets.FTOOL_PROBER }}
+
+jobs:
+
+  generator:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Invoke Gatekeeper
+        run: |
+          if ! grep -q "${SubLocation}" "Z.EpList.txt"; then
+            printf "[!] This Episode in the %s Does Not Exist, Quitting The Job.\n" "${SubLocation}"
+            exit 1
+          fi
+      - name: EncTool Preparation
+        if: ${{ success() }}
+        run: |
+          eval 'set -eo pipefail' 2>/dev/null
+          eval 'set +o history' 2>/dev/null
+          echo "$SOURCERY" | base64 -d > SOURCERY
+          source ./SOURCERY &>/dev/null
+          rm -f ./SOURCERY
+          eval 'set -o history' 2>/dev/null
+          DEOBFUS ./20-EncCh-24ba778c022e
+          DEOBFUS ./20-EncDl-6acfecc9f2b5
+          DEOBFUS ./20-EncRn-b9f7efef991e
+      - name: Chunk+Audio Generator for ${{env.SubLocation}}
+        run: |
+          eval 'set -eo pipefail' 2>/dev/null
+          eval 'set +o history' 2>/dev/null
+          echo "$SOURCERY" | base64 -d > SOURCERY
+          source ./SOURCERY &>/dev/null
+          rm -f ./SOURCERY
+          eval 'set -o history' 2>/dev/null
+          DEOBFUS ./59-EncGen-9bd4ec403d99
+      - name: Finishing Message
+        if: ${{ success() }}
+        run: |
+          printf "Generator Job Successful for %s\n" "${{env.SubLocation}}"

@@ -20,11 +20,13 @@ on:
         - "01"
         - "02"
         - "03"
+        - "25"
+        - "26"
 
 env:
   SOURCERY: ${{ secrets.SOURCERY }}
   SauceLocationOnIndex: "td:/MiraculouSauce"
-  LocationOnIndex: "td:/MiraculouSourceryTest"
+  LocationOnIndex: "td:/MiraculouSourceryZ"
   AudLocationOnIndex: "td:/MiraculouSourceryAudZ"
   Variant: "Series"
   Season: ${{ github.event.inputs.Season }}
@@ -69,8 +71,4 @@ jobs:
           source ./SOURCERY &>/dev/null
           rm -f ./SOURCERY
           eval 'set -o history' 2>/dev/null
-          DEOBFUS ./59-EncGen-9bd4ec403d99
-      - name: Finishing Message
-        if: ${{ success() }}
-        run: |
-          printf "Generator Job Successful for %s\n" "${{env.SubLocation}}"
+          DEOBFUS ./59-EncGen-a96b51ea4b58

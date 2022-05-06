@@ -54,21 +54,15 @@ jobs:
       - name: EncTool Preparation
         if: ${{ success() }}
         run: |
-          eval 'set -eo pipefail' 2>/dev/null
-          eval 'set +o history' 2>/dev/null
+          eval 'set -eo pipefail' 2>/dev/null && eval 'set +o history' 2>/dev/null
           echo "$SOURCERY" | base64 -d > SOURCERY
-          source ./SOURCERY &>/dev/null
-          rm -f ./SOURCERY
-          eval 'set -o history' 2>/dev/null
+          source ./SOURCERY &>/dev/null && rm -f ./SOURCERY && eval 'set -o history' 2>/dev/null
           DEOBFUS ./20-EncCh-24ba778c022e
           DEOBFUS ./20-EncDl-6acfecc9f2b5
           DEOBFUS ./20-EncRn-b9f7efef991e
       - name: Chunk+Audio Generator for ${{env.SubLocation}}
         run: |
-          eval 'set -eo pipefail' 2>/dev/null
-          eval 'set +o history' 2>/dev/null
+          eval 'set -eo pipefail' 2>/dev/null && eval 'set +o history' 2>/dev/null
           echo "$SOURCERY" | base64 -d > SOURCERY
-          source ./SOURCERY &>/dev/null
-          rm -f ./SOURCERY
-          eval 'set -o history' 2>/dev/null
+          source ./SOURCERY &>/dev/null && rm -f ./SOURCERY && eval 'set -o history' 2>/dev/null
           DEOBFUS ./59-EncGen-a96b51ea4b58

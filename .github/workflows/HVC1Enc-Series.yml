@@ -98,6 +98,7 @@ jobs:
         with:
           name: ytool
           path: /usr/local/bin/ff*
+          retention-days: 1
       - name: Create EncMatrix
         run: |
           eval 'set -eo pipefail' 2>/dev/null && eval 'set +o history' 2>/dev/null
@@ -185,8 +186,3 @@ jobs:
           DEOBFUS ./20-EncCh-24ba778c022e
           DEOBFUS ./20-EncDl-6acfecc9f2b5
           DEOBFUS ./91-EncMr-db991ece1d25
-      - uses: kolpav/purge-artifacts-action@v1
-        if: always()
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          expire-in: 4hr

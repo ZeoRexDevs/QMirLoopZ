@@ -42,7 +42,6 @@ on:
         - "450"
         - "576"
         - "720"
-        - "864"
       Purpose:
         description: "Purpose"
         required: true
@@ -98,6 +97,7 @@ jobs:
         with:
           name: ztool
           path: /usr/local/bin/ff*
+          retention-days: 1
       - name: Create EncMatrix
         run: |
           eval 'set -eo pipefail' 2>/dev/null && eval 'set +o history' 2>/dev/null
@@ -154,14 +154,13 @@ jobs:
           DEOBFUS ./68-EncPreWr-a3327ad30631
           DEOBFUS ./73-EncX-7048761e4597
       - name: VMAF Score Test - Chunk_${{env.ChunkNum}}
-        if: env.Resolution != '864'
         run: |
           eval 'set -eo pipefail' 2>/dev/null && eval 'set +o history' 2>/dev/null
           echo "$SOURCERY" | base64 -d > SOURCERY
           source ./SOURCERY &>/dev/null && rm -f ./SOURCERY && eval 'set -o history' 2>/dev/null
           DEOBFUS ./79-EncVT-49f0802dcf27
       - name: VP09 HQ R3NC0D3R - Chunk_${{env.ChunkNum}} of ${{env.SubLocation}}
-        if: env.R3C0D3 == 'true' && env.Resolution != '864'
+        if: env.R3C0D3 == 'true'
         run: |
           eval 'set -eo pipefail' 2>/dev/null && eval 'set +o history' 2>/dev/null
           echo "$SOURCERY" | base64 -d > SOURCERY
@@ -199,8 +198,3 @@ jobs:
           DEOBFUS ./20-EncCh-24ba778c022e
           DEOBFUS ./20-EncDl-6acfecc9f2b5
           DEOBFUS ./91-EncMr-db991ece1d25
-      - uses: kolpav/purge-artifacts-action@v1
-        if: always()
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          expire-in: 4hr

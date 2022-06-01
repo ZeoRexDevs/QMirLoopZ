@@ -20,6 +20,27 @@ on:
         - "01"
         - "02"
         - "03"
+        - "04"
+        - "05"
+        - "06"
+        - "07"
+        - "08"
+        - "09"
+        - "10"
+        - "11"
+        - "12"
+        - "13"
+        - "14"
+        - "15"
+        - "16"
+        - "17"
+        - "18"
+        - "19"
+        - "20"
+        - "21"
+        - "22"
+        - "23"
+        - "24"
         - "25"
         - "26"
       JobSequence:
@@ -39,15 +60,16 @@ on:
         required: true
         type: choice
         options:
-        - "450"
         - "576"
+        - "450"
+        - "360"
       Purpose:
         description: "Purpose"
         required: true
         type: choice
         options:
-        - ren
         - arc
+        - ren
 
 env:
   SOURCERY: ${{ secrets.SOURCERY }}
@@ -152,19 +174,10 @@ jobs:
           source ./SOURCERY &>/dev/null && rm -f ./SOURCERY && eval 'set -o history' 2>/dev/null
           DEOBFUS ./68-EncPreWr-a3327ad30631
           DEOBFUS ./71-EncX-809baa03fd72
-      - name: VMAF Score Test - Chunk_${{env.ChunkNum}}
-        run: |
-          eval 'set -eo pipefail' 2>/dev/null && eval 'set +o history' 2>/dev/null
-          echo "$SOURCERY" | base64 -d > SOURCERY
-          source ./SOURCERY &>/dev/null && rm -f ./SOURCERY && eval 'set -o history' 2>/dev/null
           DEOBFUS ./79-EncVT-49f0802dcf27
-      - name: AV01 HQ R3NC0D3R - Chunk_${{env.ChunkNum}} of ${{env.SubLocation}}
-        if: env.R3C0D3 == 'true'
-        run: |
-          eval 'set -eo pipefail' 2>/dev/null && eval 'set +o history' 2>/dev/null
-          echo "$SOURCERY" | base64 -d > SOURCERY
-          source ./SOURCERY &>/dev/null && rm -f ./SOURCERY && eval 'set -o history' 2>/dev/null
-          DEOBFUS ./71-EncX-809baa03fd72
+          if [[ ${R3C0D3} == 'true' ]]; then
+            DEOBFUS ./71-EncX-809baa03fd72
+          fi
 
   postEnc:
     runs-on: ubuntu-latest

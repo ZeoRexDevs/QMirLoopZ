@@ -1,4 +1,4 @@
-name: "Zenerator Test 4 Series"
+name: "Series Zenerator"
 
 on:
   workflow_dispatch:
@@ -20,8 +20,34 @@ on:
         - "01"
         - "02"
         - "03"
+        - "04"
+        - "05"
+        - "06"
+        - "07"
+        - "08"
+        - "09"
+        - "10"
+        - "11"
+        - "12"
+        - "13"
+        - "14"
+        - "15"
+        - "16"
+        - "17"
+        - "18"
+        - "19"
+        - "20"
+        - "21"
+        - "22"
+        - "23"
+        - "24"
         - "25"
         - "26"
+      GenAud:
+        description: "Generate Audio"
+        required: false
+        type: boolean
+        default: true
 
 env:
   SOURCERY: ${{ secrets.SOURCERY }}
@@ -32,6 +58,7 @@ env:
   Season: ${{ github.event.inputs.Season }}
   EpNum: ${{ github.event.inputs.EpNum }}
   SubLocation: "S${{ github.event.inputs.Season }}E${{ github.event.inputs.EpNum }}"
+  GenAud: ${{ github.event.inputs.GenAud }}
   RCLONE_CONFIG_URL: ${{ secrets.RCLONE_CONFIG_URL }}
   RCLONE_INSTALL_MIRROR: ${{ secrets.RCLONE_INSTALL_MIRROR }}
   FTOOL_ARC_URL: ${{ secrets.FTOOL_ARC_URL }}

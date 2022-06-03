@@ -62,7 +62,6 @@ on:
         options:
         - "576"
         - "450"
-        - "360"
       Purpose:
         description: "Purpose"
         required: true
